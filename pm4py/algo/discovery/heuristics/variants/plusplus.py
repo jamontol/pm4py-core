@@ -221,7 +221,8 @@ def discover_abstraction_log(log: EventLog, parameters: Optional[Dict[Any, Any]]
     end_activities = log_ea.get_end_activities(log, parameters=parameters)
     activities_occurrences = log_attributes.get_attribute_values(log, activity_key, parameters=parameters)
     efg_parameters = copy(parameters)
-    efg_parameters[efg_get.Parameters.KEEP_FIRST_FOLLOWING] = True
+    efg_parameters[efg_get.Parameters.KEEP_FIRST_FOLLOWING] = False
+    efg_parameters[efg_get.Parameters.KEEP_CONCURRENT_FOLLOWING] = True
     dfg = efg_get.apply(log, parameters=efg_parameters)
     performance_dfg = dfg_alg.apply(log, variant=dfg_alg.Variants.PERFORMANCE, parameters=parameters)
     sojourn_time = soj_get.apply(log, parameters=parameters)
@@ -317,7 +318,7 @@ def discover_abstraction_dataframe(df: pd.DataFrame, parameters: Optional[Dict[A
     end_activities = pd_ea.get_end_activities(df, parameters=parameters)
     activities_occurrences = pd_attributes.get_attribute_values(df, activity_key, parameters=parameters)
     efg_parameters = copy(parameters)
-    efg_parameters[pd_efg.Parameters.KEEP_FIRST_FOLLOWING] = True
+    efg_parameters[pd_efg.Parameters.KEEP_FIRST_FOLLOWING] = False
     dfg = pd_efg.apply(df, parameters=efg_parameters)
     performance_dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
                                                   activity_key=activity_key, timestamp_key=timestamp_key,

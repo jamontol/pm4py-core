@@ -58,10 +58,9 @@ def apply(interval_log: EventLog, parameters: Optional[Dict[Union[str, Parameter
             act1 = sorted_trace[i][activity_key]
             tc1 = sorted_trace[i][timestamp_key]
             j = i + 1
+
             first = True
-            
-            while j < len(sorted_trace):
-                
+            while j < len(sorted_trace):   
                 ts2 = sorted_trace[j][start_timestamp_key]
                 act2 = sorted_trace[j][activity_key]
                 if first:

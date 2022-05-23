@@ -10,7 +10,7 @@ numpy>=1.19.5
 pandas>=1.1.5
 pydotplus
 pytz
-pyvis
+pyvis>=0.2.1
 scipy
 stringdist
 sympy

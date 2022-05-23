@@ -82,5 +82,4 @@ def apply(interval_log: EventLog, parameters: Optional[Dict[Union[str, Parameter
                 j = j + 1
             i = i + 1
 
-    print(ret_dict)
     return ret_dict

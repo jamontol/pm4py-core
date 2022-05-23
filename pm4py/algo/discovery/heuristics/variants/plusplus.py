@@ -1,16 +1,13 @@
 '''
     This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
     PM4Py is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
-
     PM4Py is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
@@ -60,12 +57,9 @@ class Parameters(Enum):
 def apply(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the Heuristics Miner ++ algorithm
-
     Implements the approach described in
     Burattin, Andrea, and Alessandro Sperduti. "Heuristics Miner for Time Intervals." ESANN. 2010.
-
     https://andrea.burattin.net/public-files/publications/2010-esann-slides.pdf
-
     Parameters
     --------------
     log
@@ -80,7 +74,6 @@ def apply(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> Tuple[P
         - Parameters.MIN_ACT_COUNT
         - Parameters.MIN_DFG_OCCURRENCES
         - Parameters.HEU_NET_DECORATION
-
     Returns
     --------------
     net
@@ -98,12 +91,9 @@ def apply(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> Tuple[P
 def apply_pandas(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the Heuristics Miner ++ algorithm
-
     Implements the approach described in
     Burattin, Andrea, and Alessandro Sperduti. "Heuristics Miner for Time Intervals." ESANN. 2010.
-
     https://andrea.burattin.net/public-files/publications/2010-esann-slides.pdf
-
     Parameters
     --------------
     df
@@ -119,7 +109,6 @@ def apply_pandas(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) 
         - Parameters.MIN_ACT_COUNT
         - Parameters.MIN_DFG_OCCURRENCES
         - Parameters.HEU_NET_DECORATION
-
     Returns
     --------------
     net
@@ -136,14 +125,10 @@ def apply_pandas(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) 
 
 def apply_heu(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> HeuristicsNet:
     """
-    Discovers an heuristics net using the Heuristics Miner ++ algorithm modified 
-    to allow direct succession of concurrent activities
-
+    Discovers an heuristics net using the Heuristics Miner ++ algorithm
     Implements the approach described in
     Burattin, Andrea, and Alessandro Sperduti. "Heuristics Miner for Time Intervals." ESANN. 2010.
-
     https://andrea.burattin.net/public-files/publications/2010-esann-slides.pdf
-
     Parameters
     --------------
     log
@@ -158,7 +143,6 @@ def apply_heu(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> Heu
         - Parameters.MIN_ACT_COUNT
         - Parameters.MIN_DFG_OCCURRENCES
         - Parameters.HEU_NET_DECORATION
-
     Returns
     --------------
     heu_net
@@ -185,7 +169,6 @@ def discover_abstraction_log(log: EventLog, parameters: Optional[Dict[Any, Any]]
     Any, Any, Any, Any, Any, Any, Any]:
     """
     Discovers an abstraction from a log that is useful for the Heuristics Miner ++ algorithm
-
     Parameters
     --------------
     log
@@ -196,7 +179,6 @@ def discover_abstraction_log(log: EventLog, parameters: Optional[Dict[Any, Any]]
         - Parameters.START_TIMESTAMP_KEY
         - Parameters.TIMESTAMP_KEY
         - Parameters.CASE_ID_KEY
-
     Returns
     --------------
     start_activities
@@ -222,8 +204,7 @@ def discover_abstraction_log(log: EventLog, parameters: Optional[Dict[Any, Any]]
     end_activities = log_ea.get_end_activities(log, parameters=parameters)
     activities_occurrences = log_attributes.get_attribute_values(log, activity_key, parameters=parameters)
     efg_parameters = copy(parameters)
-    efg_parameters[efg_get.Parameters.KEEP_FIRST_FOLLOWING] = False
-    efg_parameters[efg_get.Parameters.KEEP_CONCURRENT_FOLLOWING] = True
+    efg_parameters[efg_get.Parameters.KEEP_FIRST_FOLLOWING] = True
     dfg = efg_get.apply(log, parameters=efg_parameters)
     performance_dfg = dfg_alg.apply(log, variant=dfg_alg.Variants.PERFORMANCE, parameters=parameters)
     sojourn_time = soj_get.apply(log, parameters=parameters)
@@ -236,12 +217,9 @@ def discover_abstraction_log(log: EventLog, parameters: Optional[Dict[Any, Any]]
 def apply_heu_pandas(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> HeuristicsNet:
     """
     Discovers an heuristics net using the Heuristics Miner ++ algorithm
-
     Implements the approach described in
     Burattin, Andrea, and Alessandro Sperduti. "Heuristics Miner for Time Intervals." ESANN. 2010.
-
     https://andrea.burattin.net/public-files/publications/2010-esann-slides.pdf
-
     Parameters
     --------------
     df
@@ -257,7 +235,6 @@ def apply_heu_pandas(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = No
         - Parameters.MIN_ACT_COUNT
         - Parameters.MIN_DFG_OCCURRENCES
         - Parameters.HEU_NET_DECORATION
-
     Returns
     --------------
     heu_net
@@ -275,7 +252,6 @@ def discover_abstraction_dataframe(df: pd.DataFrame, parameters: Optional[Dict[A
     Any, Any, Any, Any, Any, Any, Any]:
     """
     Discovers an abstraction from a dataframe that is useful for the Heuristics Miner ++ algorithm
-
     Parameters
     --------------
     df
@@ -286,7 +262,6 @@ def discover_abstraction_dataframe(df: pd.DataFrame, parameters: Optional[Dict[A
         - Parameters.START_TIMESTAMP_KEY
         - Parameters.TIMESTAMP_KEY
         - Parameters.CASE_ID_KEY
-
     Returns
     --------------
     start_activities
@@ -319,7 +294,7 @@ def discover_abstraction_dataframe(df: pd.DataFrame, parameters: Optional[Dict[A
     end_activities = pd_ea.get_end_activities(df, parameters=parameters)
     activities_occurrences = pd_attributes.get_attribute_values(df, activity_key, parameters=parameters)
     efg_parameters = copy(parameters)
-    efg_parameters[pd_efg.Parameters.KEEP_FIRST_FOLLOWING] = False
+    efg_parameters[pd_efg.Parameters.KEEP_FIRST_FOLLOWING] = True
     dfg = pd_efg.apply(df, parameters=efg_parameters)
     performance_dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
                                                   activity_key=activity_key, timestamp_key=timestamp_key,
@@ -335,12 +310,9 @@ def discover_heu_net_plus_plus(start_activities, end_activities, activities_occu
                                sojourn_time, concurrent_activities, parameters: Optional[Dict[Any, Any]] = None):
     """
     Discovers an heuristics net using the Heuristics Miner ++ algorithm
-
     Implements the approach described in
     Burattin, Andrea, and Alessandro Sperduti. "Heuristics Miner for Time Intervals." ESANN. 2010.
-
     https://andrea.burattin.net/public-files/publications/2010-esann-slides.pdf
-
     Parameters
     --------------
     start_activities
@@ -364,7 +336,6 @@ def discover_heu_net_plus_plus(start_activities, end_activities, activities_occu
         - Parameters.MIN_ACT_COUNT
         - Parameters.MIN_DFG_OCCURRENCES
         - Parameters.HEU_NET_DECORATION
-
     Returns
     --------------
     heu_net
@@ -406,7 +377,6 @@ def calculate(heu_net: HeuristicsNet, dependency_thresh: float, and_measure_thre
               heu_net_decoration: str) -> HeuristicsNet:
     """
     Calculates the dependency matrix and the AND measures using the Heuristics Miner ++ formulas
-
     Parameters
     ----------------
     heu_net
@@ -417,7 +387,6 @@ def calculate(heu_net: HeuristicsNet, dependency_thresh: float, and_measure_thre
         AND measure threshold
     heu_net_decoration
         Decoration to use (frequency/performance)
-
     Returns
     ----------------
     heu_net
@@ -450,7 +419,6 @@ def calculate(heu_net: HeuristicsNet, dependency_thresh: float, and_measure_thre
 def calculate_dependency(heu_net: HeuristicsNet, dependency_thresh: float, heu_net_decoration: str) -> HeuristicsNet:
     """
     Calculates the dependency matrix using the Heuristics Miner ++ formula
-
     Parameters
     --------------
     heu_net
@@ -459,7 +427,6 @@ def calculate_dependency(heu_net: HeuristicsNet, dependency_thresh: float, heu_n
         Dependency threshold
     heu_net_decoration
         Decoration to include (frequency/performance)
-
     Returns
     ---------------
     heu_net
@@ -486,14 +453,12 @@ def calculate_dependency(heu_net: HeuristicsNet, dependency_thresh: float, heu_n
 def calculate_and_out_measure(heu_net: HeuristicsNet, and_measure_thresh: float) -> HeuristicsNet:
     """
     Calculates the AND measure for outgoing edges using the Heuristics Miner ++ formula
-
     Parameters
     ---------------
     heu_net
         Heuristics net
     and_measure_thresh
         And measure threshold
-
     Returns
     ---------------
     heu_net
@@ -527,14 +492,12 @@ def calculate_and_out_measure(heu_net: HeuristicsNet, and_measure_thresh: float)
 def calculate_and_in_measure(heu_net: HeuristicsNet, and_measure_thresh: float) -> HeuristicsNet:
     """
     Calculates the AND measure for incoming edges using the Heuristics Miner ++ formula
-
     Parameters
     ---------------
     heu_net
         Heuristics net
     and_measure_thresh
         And measure threshold
-
     Returns
     ---------------
     heu_net

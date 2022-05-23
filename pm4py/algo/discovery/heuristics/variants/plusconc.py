@@ -184,7 +184,9 @@ def apply_heu(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> Heu
 def discover_abstraction_log(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> Tuple[
     Any, Any, Any, Any, Any, Any, Any]:
     """
-    Discovers an abstraction from a log that is useful for the Heuristics Miner ++ algorithm
+    Discovers an abstraction from a log that is useful for the Heuristics Miner ++ algorithm modified 
+    to allow direct succession of concurrent activities
+
 
     Parameters
     --------------
@@ -235,7 +237,9 @@ def discover_abstraction_log(log: EventLog, parameters: Optional[Dict[Any, Any]]
 
 def apply_heu_pandas(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> HeuristicsNet:
     """
-    Discovers an heuristics net using the Heuristics Miner ++ algorithm
+    Discovers an heuristics net using the Heuristics Miner ++ algorithm modified 
+    to allow direct succession of concurrent activities
+
 
     Implements the approach described in
     Burattin, Andrea, and Alessandro Sperduti. "Heuristics Miner for Time Intervals." ESANN. 2010.
@@ -275,6 +279,8 @@ def discover_abstraction_dataframe(df: pd.DataFrame, parameters: Optional[Dict[A
     Any, Any, Any, Any, Any, Any, Any]:
     """
     Discovers an abstraction from a dataframe that is useful for the Heuristics Miner ++ algorithm
+    modified to allow direct succession of concurrent activities
+
 
     Parameters
     --------------
@@ -320,6 +326,7 @@ def discover_abstraction_dataframe(df: pd.DataFrame, parameters: Optional[Dict[A
     activities_occurrences = pd_attributes.get_attribute_values(df, activity_key, parameters=parameters)
     efg_parameters = copy(parameters)
     efg_parameters[pd_efg.Parameters.KEEP_FIRST_FOLLOWING] = False
+    efg_parameters[efg_get.Parameters.KEEP_CONCURRENT_FOLLOWING] = True
     dfg = pd_efg.apply(df, parameters=efg_parameters)
     performance_dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
                                                   activity_key=activity_key, timestamp_key=timestamp_key,
@@ -334,7 +341,7 @@ def discover_abstraction_dataframe(df: pd.DataFrame, parameters: Optional[Dict[A
 def discover_heu_net_plus_plus(start_activities, end_activities, activities_occurrences, dfg, performance_dfg,
                                sojourn_time, concurrent_activities, parameters: Optional[Dict[Any, Any]] = None):
     """
-    Discovers an heuristics net using the Heuristics Miner ++ algorithm
+    Discovers an heuristics net using the Heuristics Miner ++ algorithm modified to allow direct succession of concurrent activities
 
     Implements the approach described in
     Burattin, Andrea, and Alessandro Sperduti. "Heuristics Miner for Time Intervals." ESANN. 2010.

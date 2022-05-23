@@ -48,8 +48,6 @@ def apply(interval_log: EventLog, parameters: Optional[Dict[Union[str, Parameter
 
     keep_concurrent_following = exec_utils.get_param_value(Parameters.KEEP_CONCURRENT_FOLLOWING, parameters, False)
 
-    #print(concurrent_activities)
-
     ret_dict = {}
     for trace in interval_log:
         sorted_trace = sorting.sort_timestamp_trace(trace, start_timestamp_key)

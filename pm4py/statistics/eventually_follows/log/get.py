@@ -24,7 +24,7 @@ from pm4py.objects.log.obj import EventLog
 
 from pm4py.statistics.concurrent_activities.log import get as conc_act_get
 
-#from tqdm import tqdm
+from tqdm import tqdm
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -52,53 +52,7 @@ def apply(interval_log: EventLog, parameters: Optional[Dict[Union[str, Parameter
 
     ret_dict = {}
 
-    '''
-    for trace in interval_log:
-        sorted_trace = sorting.sort_timestamp_trace(trace, start_timestamp_key)
-        i = 0
-        while i < len(sorted_trace):
-            act1 = sorted_trace[i][activity_key]
-            tc1 = sorted_trace[i][timestamp_key]
-            j = i + 1
-
-            first = True
-            while j < len(sorted_trace):   
-                ts2 = sorted_trace[j][start_timestamp_key]
-                act2 = sorted_trace[j][activity_key]
-
-                ts2_ant = sorted_trace[j-1][start_timestamp_key]
-                act2_ant = sorted_trace[j-1][activity_key]
-                tup_ant = tuple(sorted((act2, act2_ant))) 
-
-                if first:
-                    tup_conc = tuple(sorted((act2, act1))) # just to initilize the variable, they won't be concurrent
-                else:
-                    tup_conc = tuple(sorted((act2, act2_ini)))
-                if (tc1 <= ts2): 
-                    #if (keep_concurrent_following and tup_conc in concurrent_activities) or (first and tup_ant not in concurrent_activities):
-                    if (keep_concurrent_following and tup_conc in concurrent_activities) or first:
-                        tup = (act1, act2)
-                        if tup not in ret_dict:
-                            ret_dict[tup] = 0
-                        ret_dict[tup] = ret_dict[tup] + 1
-                    #keep_first_following: 
-                        act2_ini = act2
-                        first = False 
-                    else:
-                        pass #break
-                    if keep_first_following:
-                        break
-
-                j = j + 1
-
-            i = i + 1
     
-
-    print(f'CONC : {concurrent_activities}')
-    '''
-
-
-
     for trace in interval_log:
 
         sorted_trace = sorting.sort_timestamp_trace(trace, start_timestamp_key)
@@ -118,12 +72,13 @@ def apply(interval_log: EventLog, parameters: Optional[Dict[Union[str, Parameter
                 act2 = sorted_trace[j][activity_key]
 
                 if first:
-                    tup_conc_list = []#tuple(sorted((act2, act1))) # just to initialize the variable, they won't be concurrent
+                    tup_conc = tuple() #tuple(sorted((act2, act1))) # just to initialize the variable, they won't be concurrent
+                    act2_first = act2
                 else:
-                    for act in act2_ant:
-                        tup_conc_list.append(tuple(sorted((act2, act))))
+                    tup_conc = tuple(sorted((act2, act2_first)))
+
                 if (tc1 <= ts2): 
-                    if (keep_concurrent_following and (all(tup_conc in concurrent_activities for tup_conc in tup_conc_list))) or first:
+                    if (keep_concurrent_following and (tup_conc in concurrent_activities)) or first:
                         tup = (act1, act2)
                         if tup not in ret_dict:
                             ret_dict[tup] = 0

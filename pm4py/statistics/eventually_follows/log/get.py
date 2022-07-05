@@ -52,7 +52,7 @@ def apply(interval_log: EventLog, parameters: Optional[Dict[Union[str, Parameter
 
     ret_dict = {}
 
-    
+
     for trace in interval_log:
 
         sorted_trace = sorting.sort_timestamp_trace(trace, start_timestamp_key)
@@ -71,14 +71,12 @@ def apply(interval_log: EventLog, parameters: Optional[Dict[Union[str, Parameter
                 ts2 = sorted_trace[j][start_timestamp_key]
                 act2 = sorted_trace[j][activity_key]
 
-                if first:
-                    tup_conc = tuple() #tuple(sorted((act2, act1))) # just to initialize the variable, they won't be concurrent
-                    act2_first = act2
-                else:
-                    tup_conc = tuple(sorted((act2, act2_first)))
+                tup_conc_list = []#tuple(sorted((act2, act1))) # just to initialize the variable, they won't be concurrent
+                for act in act2_ant:
+                    tup_conc_list.append(tuple(sorted((act2, act))))
 
                 if (tc1 <= ts2): 
-                    if (keep_concurrent_following and (tup_conc in concurrent_activities)) or first:
+                    if (keep_concurrent_following and (all(tup_conc in concurrent_activities for tup_conc in tup_conc_list))) or first:
                         tup = (act1, act2)
                         if tup not in ret_dict:
                             ret_dict[tup] = 0
@@ -97,3 +95,5 @@ def apply(interval_log: EventLog, parameters: Optional[Dict[Union[str, Parameter
             #pbar.update(1)
 
     return ret_dict
+
+    
